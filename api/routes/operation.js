@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { Operation, Categories } = require("../models");
-const { destroy } = require("../models/operation");
 
 router.get("/", (req, res, next) => {
   Operation.findAll({

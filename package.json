@@ -27,7 +27,8 @@
     "start": "concurrently 'npm run server' 'npm run client'",
     "build": "react-scripts build",
     "client": "react-scripts start",
-    "server": "nodemon api/server.js"
+    "server": "nodemon api/server.js",
+    "seed": "node api/seed"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "nodemon": "^2.0.15"
   }
 }
