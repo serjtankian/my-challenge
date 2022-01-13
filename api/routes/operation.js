@@ -31,6 +31,7 @@ router.post("/new", (req, res, next) => {
   const { concept, amount, type } = req.body;
   Operation.create({ concept, amount, type })
     .then((op) => {
+      console.log("este es la operation", op);
       Categories.findOrCreate({
         where: {
           name: req.body.categories,
@@ -71,7 +72,7 @@ router.put("/edit/:id", (req, res, next) => {
       .then((category) => {
         opUpdated[0].getCategory();
         opUpdated[0].setCategory(category[0]);
-        console.log("este es el objeto", opUpdated[0]);
+        console.log("este es el updated", opUpdated[0]);
         res.send(opUpdated[0]);
       })
       .catch(next);

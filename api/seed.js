@@ -144,14 +144,15 @@ categories.forEach((category) => {
 op.forEach(async (operation) => {
   let { concept, amount, type, categories } = operation;
 
-  Operation.create({ concept, amount, type }).then((op) => {
-    Categories.findOne({
-      where: {
-        name: categories,
-      },
-    }).then((cate) => {
-      op.setCategory(cate);
-    });
-  });
-  /*  .catch((error) => console.log(error)); */
+  Operation.create({ concept, amount, type })
+    .then((op) => {
+      Categories.findOne({
+        where: {
+          name: categories,
+        },
+      }).then((cate) => {
+        op.setCategory(cate);
+      });
+    })
+    .catch((error) => console.log(error));
 });

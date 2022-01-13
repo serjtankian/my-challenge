@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -26,7 +28,7 @@
   "scripts": {
     "start": "concurrently 'npm run server' 'npm run client'",
     "build": "react-scripts build",
-    "client": "react-scripts start",
+    "client":"PORT=3000 react-scripts start",
     "server": "nodemon api/server.js",
     "seed": "node api/seed"
   },
