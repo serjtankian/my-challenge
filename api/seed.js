@@ -124,7 +124,7 @@ const op = [
   {
     concept: "twenty three",
     amount: 695,
-    type: "lost",
+    type: "ingreso",
     categories: "digital service",
   },
 ];

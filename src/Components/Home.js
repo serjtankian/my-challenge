@@ -1,6 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Axios from "axios";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@material-ui/core";
+
+import "../index.css";
 
 function Home() {
   // el home hara un axios y tomara el array operation sumando el amount.
@@ -29,26 +39,72 @@ function Home() {
   console.log("ultimos 10", lastTen);
 
   return (
-    <div>
-      <h1> ingreso:{resultInput} </h1>
-      <h1> egreso:{resultOutput} </h1>
+    <div className="table">
       <section>
-        <ul>
-          <li>
-            {lastTen.map((element) => {
-              return (
-                <div>
-                  {element.concept} <br></br>
-                  {element.amount}
-                  <br></br>
-                  {element.type}
-                  <br></br>
-                  {element.category.name}
-                </div>
-              );
-            })}
-          </li>
-        </ul>
+        <TableContainer id="aparte2">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Ingreso</TableCell>
+                <TableCell>Egreso</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <h1>$ {resultInput}</h1>
+                </TableCell>
+                <TableCell>
+                  <h1>$ {resultOutput}</h1>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </section>{" "}
+      <br></br>
+      <section>
+        {/*  <h1>Ultimos 10 registros de operaciones</h1> */}
+        <TableContainer id="aparte">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <strong>
+                    <h1>Concept</h1>
+                  </strong>
+                </TableCell>
+                <TableCell>
+                  <strong>
+                    <h1> Amount</h1>
+                  </strong>
+                </TableCell>
+                <TableCell>
+                  <strong>
+                    <h1> Type</h1>
+                  </strong>
+                </TableCell>
+                <TableCell>
+                  <strong>
+                    <h1>Category</h1>
+                  </strong>{" "}
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {lastTen.map((cell) => {
+                return (
+                  <TableRow key={cell.id}>
+                    <TableCell>{cell.concept}</TableCell>
+                    <TableCell>{cell.amount}</TableCell>
+                    <TableCell>{cell.type}</TableCell>
+                    <TableCell>{cell.category.name}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </section>
     </div>
   );
