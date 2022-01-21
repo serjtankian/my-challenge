@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -13,6 +14,7 @@
     "express": "^4.17.2",
     "helmet": "^5.0.1",
     "kill-port": "^1.6.1",
+    "material-table": "^1.69.3",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pg": "^8.7.1",
@@ -28,7 +30,7 @@
   "scripts": {
     "start": "concurrently 'npm run server' 'npm run client'",
     "build": "react-scripts build",
-    "client":"PORT=3000 react-scripts start",
+    "client": "PORT=3000 react-scripts start",
     "server": "nodemon api/server.js",
     "seed": "node api/seed"
   },
@@ -52,6 +54,7 @@
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "source-map-loader": "^3.0.1"
   }
 }
