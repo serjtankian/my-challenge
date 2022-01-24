@@ -28,17 +28,18 @@ router.get("/:id", (req, res, next) => {
 });
 
 router.post("/new", (req, res, next) => {
-  const { concept, amount, type } = req.body;
+  const { concept, amount, type, categories } = req.body;
   Operation.create({ concept, amount, type })
     .then((op) => {
       console.log("este es la operation", op);
       Categories.findOrCreate({
         where: {
-          name: req.body.categories,
+          name: categories,
         },
       }).then((category) => {
         console.log("esta es la categoria", category);
         op.setCategory(category[0]);
+        console.log(op);
         res.send(op).status(201);
       });
     })

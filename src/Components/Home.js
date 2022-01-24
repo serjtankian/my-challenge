@@ -121,7 +121,7 @@ function Home() {
                     <TableCell>{cell.concept}</TableCell>
                     <TableCell>$ {cell.amount}</TableCell>
                     <TableCell>{cell.type}</TableCell>
-                    <TableCell>{cell.category.name}</TableCell>
+                    <TableCell>{cell.category.name ?? "no existe"}</TableCell>
                   </TableRow>
                 );
               })}

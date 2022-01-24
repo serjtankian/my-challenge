@@ -65,6 +65,13 @@ function OperationForm() {
     });
   };
 
+  const postApi = async () => {
+    await axios.post(baseUrl + "new", operationPost).then((response) => {
+      console.log(response.data);
+      openCloseModal();
+    });
+  };
+
   const openCloseModal = () => {
     setInsertModal(!insertModal);
   };
@@ -87,6 +94,7 @@ function OperationForm() {
           className={classes.inputMaterial}
           label="Amount"
           name="amount"
+          type="number"
           onChange={handleChange}
         />
         <TextField
@@ -94,7 +102,7 @@ function OperationForm() {
           className={classes.inputMaterial}
           label="Type"
           name="type"
-          defaultValue="ingreso"
+          defaultValue="none"
           onChange={handleChange}
           select
         >
@@ -105,10 +113,10 @@ function OperationForm() {
         <TextField
           id="select"
           className={classes.inputMaterial}
-          label="Category"
-          name="category"
-          defaultValue="tax"
+          label="Categories"
+          name="categories"
           onChange={handleChange}
+          defaultValue="none"
           select
         >
           <MenuItem value="tax">tax</MenuItem>
@@ -121,7 +129,9 @@ function OperationForm() {
       <br />
       <br />
       <div align="right">
-        <Button color="primary">Insert</Button>
+        <Button color="primary" onClick={() => postApi()}>
+          Insert
+        </Button>
         <Button onClick={() => openCloseModal()}>Cancell</Button>
       </div>
     </div>
@@ -154,33 +164,33 @@ function OperationForm() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, i) => {
-              return (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.concept}
-                  </TableCell>
-                  <TableCell align="right">{row.amount}</TableCell>
-                  <TableCell align="right">{row.type}</TableCell>
-                  <TableCell align="right">{row.category.name}</TableCell>
-                  <TableCell align="right">{row.amount}</TableCell>
-                  <TableCell align="right">{row.amount}</TableCell>
-
-                  <TableCell align="right">
-                    <Tooltip title="Edit" size="medium">
-                      <IconButton aria-label="edit">
-                        <EditIcon color="primary" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete" size="medium">
-                      <IconButton aria-label="delete">
-                        <DeleteIcon color="secondary" />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {data &&
+              data.map((row, i) => {
+                return (
+                  <TableRow key={row.id}>
+                    <TableCell component="th" scope="row">
+                      {row.concept}
+                    </TableCell>
+                    <TableCell align="right">{row.amount}</TableCell>
+                    <TableCell align="right">{row.type}</TableCell>
+                    <TableCell align="right">{row.category.name}</TableCell>
+                    <TableCell align="right">{row.amount}</TableCell>
+                    <TableCell align="right">{row.amount}</TableCell>
+                    <TableCell align="right">
+                      <Tooltip title="Edit" size="medium">
+                        <IconButton aria-label="edit">
+                          <EditIcon color="primary" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete" size="medium">
+                        <IconButton aria-label="delete">
+                          <DeleteIcon color="secondary" />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>
