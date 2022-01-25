@@ -47,6 +47,7 @@ function OperationForm() {
 
   const [data, setData] = useState([]);
   const [insertModal, setInsertModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [operationPost, setOperationPost] = useState({
     concept: "",
     amount: "",
@@ -68,12 +69,19 @@ function OperationForm() {
   const postApi = async () => {
     await axios.post(baseUrl + "new", operationPost).then((response) => {
       console.log(response.data);
-      openCloseModal();
+      openCloseModalPost();
     });
   };
 
-  const openCloseModal = () => {
+  const openCloseModalPost = () => {
     setInsertModal(!insertModal);
+  };
+
+  const openCloseModaEdit = () => {
+    setEditModal(!editModal);
+  };
+  const operationSelected = (selected, typeCase) => {
+    setData(selected)(typeCase === "Edit") && openCloseModaEdit();
   };
 
   useEffect(() => {
@@ -102,7 +110,7 @@ function OperationForm() {
           className={classes.inputMaterial}
           label="Type"
           name="type"
-          defaultValue="none"
+          defaultValue=""
           onChange={handleChange}
           select
         >
@@ -116,7 +124,7 @@ function OperationForm() {
           label="Categories"
           name="categories"
           onChange={handleChange}
-          defaultValue="none"
+          defaultValue=""
           select
         >
           <MenuItem value="tax">tax</MenuItem>
@@ -132,7 +140,67 @@ function OperationForm() {
         <Button color="primary" onClick={() => postApi()}>
           Insert
         </Button>
-        <Button onClick={() => openCloseModal()}>Cancell</Button>
+        <Button onClick={() => openCloseModalPost()}>Cancell</Button>
+      </div>
+    </div>
+  );
+
+  const bodyEdit = (
+    <div className={classes.modal}>
+      <h1>Edit operation</h1>
+      <FormControl>
+        <TextField
+          className={classes.inputMaterial}
+          label="Concept"
+          name="concept"
+          onChange={handleChange}
+          value={operationPost && operationPost.concept}
+        />
+        <TextField
+          className={classes.inputMaterial}
+          label="Amount"
+          name="amount"
+          type="number"
+          onChange={handleChange}
+          value={operationPost && operationPost.amount}
+        />
+        <TextField
+          id="select"
+          className={classes.inputMaterial}
+          label="Type not editable"
+          name="type"
+          defaultValue=""
+          onChange={handleChange}
+          disabled
+          select
+        >
+          <MenuItem value="ingreso">ingreso</MenuItem>
+          <MenuItem value="egreso">egreso</MenuItem>
+        </TextField>
+
+        <TextField
+          id="select"
+          className={classes.inputMaterial}
+          label="Categories"
+          name="categories"
+          onChange={handleChange}
+          value={operationPost && operationPost.categories}
+          select
+        >
+          <MenuItem value="tax">tax</MenuItem>
+          <MenuItem value="digital service">digital service</MenuItem>
+          <MenuItem value="pending">pending</MenuItem>
+          <MenuItem value="financial service">financial service</MenuItem>
+          <MenuItem value="lost">lost</MenuItem>
+        </TextField>
+      </FormControl>
+      <br />
+      <br />
+      <div align="right">
+        <Button color="primary" onClick={() => postApi()}>
+          Edit
+        </Button>
+        <Button onClick={() => openCloseModaEdit()}>Cancell</Button>
       </div>
     </div>
   );
@@ -141,7 +209,7 @@ function OperationForm() {
     <div>
       <h1>ABM Operations List</h1>
       <br />
-      <Button variant="contained" onClick={() => openCloseModal()}>
+      <Button variant="contained" onClick={() => openCloseModalPost()}>
         Insert Operation
       </Button>
       <br />
@@ -178,7 +246,10 @@ function OperationForm() {
                     <TableCell align="right">{row.amount}</TableCell>
                     <TableCell align="right">
                       <Tooltip title="Edit" size="medium">
-                        <IconButton aria-label="edit">
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => operationSelected(row, "Edit")}
+                        >
                           <EditIcon color="primary" />
                         </IconButton>
                       </Tooltip>
@@ -194,8 +265,11 @@ function OperationForm() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Modal open={insertModal} onClose={openCloseModal}>
+      <Modal open={insertModal} onClose={openCloseModalPost}>
         {bodyInsert}
+      </Modal>
+      <Modal open={editModal} onClose={openCloseModaEdit}>
+        {bodyEdit}
       </Modal>
     </div>
   );
