@@ -46,14 +46,14 @@ router.post("/new", (req, res, next) => {
     .catch((error) => console.log(error));
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/delete/:id", (req, res, next) => {
   Operation.destroy({
     where: {
       id: req.params.id,
     },
   })
     .then(() => {
-      res.send(`id ${req.params.id} deleted`).status(202);
+      res.send().status(202);
     })
     .catch(next);
 });
@@ -65,18 +65,27 @@ router.put("/edit/:id", (req, res, next) => {
     },
     returning: true,
   }).then(([n, opUpdated]) => {
-    Categories.findOrCreate({
-      where: {
-        name: req.body.categories,
-      },
-    })
+    Categories.findOrCreate(
+      req.body.categories
+        ? {
+            where: {
+              name: req.body.categories,
+            },
+          }
+        : {
+            where: {
+              name: req.body.category.name,
+            },
+          }
+    )
       .then((category) => {
         opUpdated[0].getCategory();
         opUpdated[0].setCategory(category[0]);
         console.log("este es el updated", opUpdated[0]);
+        console.log("esta es la nueva category", category[0]);
         res.send(opUpdated[0]);
       })
-      .catch(next);
+      .catch((error) => console.log(error));
   });
 });
 

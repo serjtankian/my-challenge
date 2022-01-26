@@ -48,17 +48,30 @@ function OperationForm() {
   const [data, setData] = useState([]);
   const [insertModal, setInsertModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [operationPost, setOperationPost] = useState({
     concept: "",
     amount: "",
     type: "",
     categories: "",
   });
+
+  const [selected, setSelected] = useState({
+    concept: "",
+    amount: "",
+    type: "",
+    category: { name: "" },
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setOperationPost({ ...operationPost, [name]: value });
   };
-  console.log(operationPost);
+
+  const handleChangeEdit = (e) => {
+    const { name, value } = e.target;
+    setSelected({ ...selected, [name]: value });
+  };
 
   const getApi = async () => {
     await axios.get(baseUrl).then((response) => {
@@ -72,6 +85,23 @@ function OperationForm() {
       openCloseModalPost();
     });
   };
+  const putApi = async () => {
+    await axios
+      .put(baseUrl + "edit/" + selected.id, selected)
+      .then((response) => {
+        console.log(response.data);
+        openCloseModaEdit();
+      });
+  };
+  const deleteApi = async () => {
+    await axios
+      .delete(baseUrl + "delete/" + selected.id)
+      .then((response) => {
+        setData(data.filter((operation) => operation.id !== selected.id));
+        openCloseModaDelete();
+      })
+      .catch((error) => console.log(error));
+  };
 
   const openCloseModalPost = () => {
     setInsertModal(!insertModal);
@@ -80,8 +110,13 @@ function OperationForm() {
   const openCloseModaEdit = () => {
     setEditModal(!editModal);
   };
+  const openCloseModaDelete = () => {
+    setDeleteModal(!deleteModal);
+  };
+
   const operationSelected = (selected, typeCase) => {
-    setData(selected)(typeCase === "Edit") && openCloseModaEdit();
+    setSelected(selected);
+    typeCase === "Edit" ? openCloseModaEdit() : openCloseModaDelete();
   };
 
   useEffect(() => {
@@ -122,7 +157,7 @@ function OperationForm() {
           id="select"
           className={classes.inputMaterial}
           label="Categories"
-          name="categories"
+          name="category"
           onChange={handleChange}
           defaultValue=""
           select
@@ -153,24 +188,24 @@ function OperationForm() {
           className={classes.inputMaterial}
           label="Concept"
           name="concept"
-          onChange={handleChange}
-          value={operationPost && operationPost.concept}
+          onChange={handleChangeEdit}
+          defaultValue={selected && selected.concept}
         />
         <TextField
           className={classes.inputMaterial}
           label="Amount"
           name="amount"
           type="number"
-          onChange={handleChange}
-          value={operationPost && operationPost.amount}
+          onChange={handleChangeEdit}
+          defaultValue={selected && selected.amount}
         />
         <TextField
           id="select"
           className={classes.inputMaterial}
           label="Type not editable"
           name="type"
-          defaultValue=""
-          onChange={handleChange}
+          defaultValue={selected.type}
+          onChange={handleChangeEdit}
           disabled
           select
         >
@@ -183,8 +218,8 @@ function OperationForm() {
           className={classes.inputMaterial}
           label="Categories"
           name="categories"
-          onChange={handleChange}
-          value={operationPost && operationPost.categories}
+          defaultValue={selected && selected.category.name}
+          onChange={handleChangeEdit}
           select
         >
           <MenuItem value="tax">tax</MenuItem>
@@ -197,14 +232,27 @@ function OperationForm() {
       <br />
       <br />
       <div align="right">
-        <Button color="primary" onClick={() => postApi()}>
+        <Button color="primary" onClick={() => putApi()}>
           Edit
         </Button>
         <Button onClick={() => openCloseModaEdit()}>Cancell</Button>
       </div>
     </div>
   );
-
+  const bodyDelete = (
+    <div className={classes.modal}>
+      <p>
+        Are you sure do you want to delete the operation{" "}
+        <b>{selected && selected.concept}</b>?
+      </p>
+      <div align="right">
+        <Button color="secondary" onClick={() => deleteApi()}>
+          si
+        </Button>
+        <Button onClick={() => openCloseModaDelete()}>no</Button>
+      </div>
+    </div>
+  );
   return (
     <div>
       <h1>ABM Operations List</h1>
@@ -245,15 +293,19 @@ function OperationForm() {
                     <TableCell align="right">{row.amount}</TableCell>
                     <TableCell align="right">{row.amount}</TableCell>
                     <TableCell align="right">
-                      <Tooltip title="Edit" size="medium">
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() => operationSelected(row, "Edit")}
-                        >
+                      <Tooltip
+                        title="Edit"
+                        size="medium"
+                        onClick={() => operationSelected(row, "Edit")}
+                      >
+                        <IconButton aria-label="edit">
                           <EditIcon color="primary" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete" size="medium">
+                      <Tooltip
+                        title="Delete"
+                        onClick={() => operationSelected(row, "Delete")}
+                      >
                         <IconButton aria-label="delete">
                           <DeleteIcon color="secondary" />
                         </IconButton>
@@ -270,6 +322,9 @@ function OperationForm() {
       </Modal>
       <Modal open={editModal} onClose={openCloseModaEdit}>
         {bodyEdit}
+      </Modal>
+      <Modal open={deleteModal} onClose={openCloseModaDelete}>
+        {bodyDelete}
       </Modal>
     </div>
   );
