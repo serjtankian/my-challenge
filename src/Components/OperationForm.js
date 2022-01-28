@@ -38,6 +38,19 @@ const useStyles = makeStyles((theme) => ({
   inputMaterial: {
     width: "100%",
   },
+
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+    padding: theme.spacing(2, 5, 3),
+    top: "10%",
+    left: "20%",
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(1),
+    minWidth: 200,
+  },
 }));
 
 const baseUrl = "http://localhost:3001/api/operation/";
@@ -49,6 +62,7 @@ function OperationForm() {
   const [insertModal, setInsertModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [filterByCategory, setFilterByCategory] = useState("");
   const [operationPost, setOperationPost] = useState({
     concept: "",
     amount: "",
@@ -62,6 +76,18 @@ function OperationForm() {
     type: "",
     category: { name: "" },
   });
+
+  const dataFilter =
+    filterByCategory.categories && filterByCategory.categories !== "all"
+      ? data.filter((element) => {
+          return element.category.name === filterByCategory.categories;
+        })
+      : data;
+
+  const handleChangeFilter = (e) => {
+    const { name, value } = e.target;
+    setFilterByCategory({ [name]: value });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -157,7 +183,7 @@ function OperationForm() {
           id="select"
           className={classes.inputMaterial}
           label="Categories"
-          name="category"
+          name="categories"
           onChange={handleChange}
           defaultValue=""
           select
@@ -257,9 +283,32 @@ function OperationForm() {
     <div>
       <h1>ABM Operations List</h1>
       <br />
+      <br />
+
+      <br />
+      <br />
       <Button variant="contained" onClick={() => openCloseModalPost()}>
         Insert Operation
       </Button>
+
+      <FormControl className={classes.formControl}>
+        <TextField
+          id="select"
+          label="Filter by Categories"
+          name="categories"
+          className={classes.selectEmpty}
+          onChange={handleChangeFilter}
+          defaultValue=""
+          select
+        >
+          <MenuItem value="all">all</MenuItem>
+          <MenuItem value="tax">tax</MenuItem>
+          <MenuItem value="digital service">digital service</MenuItem>
+          <MenuItem value="pending">pending</MenuItem>
+          <MenuItem value="financial service">financial service</MenuItem>
+          <MenuItem value="lost">lost</MenuItem>
+        </TextField>
+      </FormControl>
       <br />
       <br />
       <TableContainer component={Paper}>
@@ -280,40 +329,39 @@ function OperationForm() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data &&
-              data.map((row, i) => {
-                return (
-                  <TableRow key={row.id}>
-                    <TableCell component="th" scope="row">
-                      {row.concept}
-                    </TableCell>
-                    <TableCell align="right">{row.amount}</TableCell>
-                    <TableCell align="right">{row.type}</TableCell>
-                    <TableCell align="right">{row.category.name}</TableCell>
-                    <TableCell align="right">{row.amount}</TableCell>
-                    <TableCell align="right">{row.amount}</TableCell>
-                    <TableCell align="right">
-                      <Tooltip
-                        title="Edit"
-                        size="medium"
-                        onClick={() => operationSelected(row, "Edit")}
-                      >
-                        <IconButton aria-label="edit">
-                          <EditIcon color="primary" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip
-                        title="Delete"
-                        onClick={() => operationSelected(row, "Delete")}
-                      >
-                        <IconButton aria-label="delete">
-                          <DeleteIcon color="secondary" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+            {dataFilter.map((row, i) => {
+              return (
+                <TableRow key={row.id}>
+                  <TableCell component="th" scope="row">
+                    {row.concept}
+                  </TableCell>
+                  <TableCell align="right">{row.amount}</TableCell>
+                  <TableCell align="right">{row.type}</TableCell>
+                  <TableCell align="right">{row.category.name}</TableCell>
+                  <TableCell align="right">{row.amount}</TableCell>
+                  <TableCell align="right">{row.amount}</TableCell>
+                  <TableCell align="right">
+                    <Tooltip
+                      title="Edit"
+                      size="medium"
+                      onClick={() => operationSelected(row, "Edit")}
+                    >
+                      <IconButton aria-label="edit">
+                        <EditIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      title="Delete"
+                      onClick={() => operationSelected(row, "Delete")}
+                    >
+                      <IconButton aria-label="delete">
+                        <DeleteIcon color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
