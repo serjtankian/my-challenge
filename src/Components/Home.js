@@ -24,10 +24,10 @@ function Home() {
   }, []);
 
   const resultInput = amount
-    .filter((element) => element.type === "ingreso")
+    .filter((element) => element.type === "input")
     .reduce((acum, element) => acum + element.amount, 0);
   const resultOutput = amount
-    .filter((element) => element.type === "egreso")
+    .filter((element) => element.type === "output")
     .reduce((acum, element) => acum + element.amount, 0);
   const totalResult = resultInput - resultOutput;
 

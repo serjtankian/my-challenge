@@ -58,8 +58,8 @@ function Filter({ data, itemSelected }) {
           select
         >
           <MenuItem value="all">all</MenuItem>
-          <MenuItem value="ingreso">ingreso</MenuItem>
-          <MenuItem value="egreso">egreso</MenuItem>
+          <MenuItem value="input">input</MenuItem>
+          <MenuItem value="output">output</MenuItem>
         </TextField>
 
         <TextField

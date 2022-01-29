@@ -51,8 +51,8 @@ function Modalpost({ handleChange, postApi, openCloseModalPost }) {
           onChange={handleChange}
           select
         >
-          <MenuItem value="ingreso">ingreso</MenuItem>
-          <MenuItem value="egreso">egreso</MenuItem>
+          <MenuItem value="input">input</MenuItem>
+          <MenuItem value="output">output</MenuItem>
         </TextField>
 
         <TextField
