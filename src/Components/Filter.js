@@ -6,6 +6,7 @@ import MaterialTable from "./MaterialTable";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
+    display: "flex",
     margin: theme.spacing(1),
     minWidth: 120,
     maxWidth: 300,

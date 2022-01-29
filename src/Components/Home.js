@@ -31,10 +31,10 @@ function Home() {
     .reduce((acum, element) => acum + element.amount, 0);
   const totalResult = resultInput - resultOutput;
 
-  const lastTen = amount
-    .sort((a, b) => a.id - b.id)
-    .reverse()
-    .slice(0, 10);
+  //recupero los ultimos 10 objetos desde localStorage
+  const list = localStorage.getItem("list");
+  const lastTen = JSON.parse(list);
+
   /*  console.log("ingreso", resultInput);
   console.log("egreso", resultOutput); */
   console.table(lastTen);
@@ -48,8 +48,8 @@ function Home() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Ingreso</TableCell>
-                <TableCell>Egreso</TableCell>
+                <TableCell>Input</TableCell>
+                <TableCell>Output</TableCell>
                 <TableCell>Total</TableCell>
               </TableRow>
             </TableHead>

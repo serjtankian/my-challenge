@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "../index.css";
 import axios from "axios";
-import { Modal, Button } from "@material-ui/core";
+import { Modal, Button, AppBar, Container } from "@material-ui/core";
 
 import Filter from "./Filter";
 import ModalEdit from "./ModalEdit";
 import ModalDelete from "./ModalDelete";
 import Modalpost from "./Modalpost";
-/* 
+
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
@@ -38,23 +38,32 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 300,
     padding: theme.spacing(2, 5, 3),
     top: "10%",
-    left: "20%",
+    left: "50%",
+    alignItems: "center",
   },
   selectEmpty: {
     marginTop: theme.spacing(1),
     minWidth: 200,
   },
-})); */
+  button: {
+    padding: theme.spacing(2, 10, 3),
+  },
+  groupBy: {
+    display: "flex",
+    padding: theme.spacing(2, 5, 3),
+    border: "2px solid #ffca28 ",
+  },
+}));
 
 const baseUrl = "http://localhost:3001/api/operation/";
 
 function OperationForm() {
+  const classes = useStyles();
+
   const [data, setData] = useState([]);
   const [insertModal, setInsertModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  /*  const [filterByCat, setFilterByCat] = useState([]);
-  const [filterByType, setFilterByType] = useState([]); */
   const [operationPost, setOperationPost] = useState({
     concept: "",
     amount: "",
@@ -123,19 +132,34 @@ function OperationForm() {
     typeCase === "Edit" ? openCloseModaEdit() : openCloseModaDelete();
   };
 
+  //Guardamos los ultimos 10 objetos en localStorage para reutilizarlos en Home.
+
+  const lastTen = data
+    .sort((a, b) => a.id - b.id)
+    .reverse()
+    .slice(0, 10);
+
+  localStorage.setItem("list", JSON.stringify(lastTen));
+
   useEffect(() => {
     getApi();
   }, []);
 
   return (
-    <div>
+    <Container>
       <h1>ABM Operations List</h1>
       <br />
-
-      <Button variant="contained" onClick={() => openCloseModalPost()}>
-        Insert Operation
-      </Button>
+      <AppBar position="static" className={classes.groupBy}>
+        <Button
+          className={classes.button}
+          variant="contained"
+          onClick={() => openCloseModalPost()}
+        >
+          Insert Operation
+        </Button>
+      </AppBar>
       <Filter data={data} itemSelected={operationSelected} />
+
       <Modal open={insertModal} onClose={openCloseModalPost}>
         <Modalpost
           handleChange={handleChange}
@@ -158,7 +182,7 @@ function OperationForm() {
           openCloseModaDelete={openCloseModaDelete}
         />
       </Modal>
-    </div>
+    </Container>
   );
 }
 

@@ -23,7 +23,7 @@ code {
   display: block;
   justify-content: flex-end;
   margin-left: 20%;
-  background-color: lightcyan;
+  background-color: rgb(138, 241, 241);
   border: solid;
   border-color: #ffca28;
 }
@@ -31,7 +31,7 @@ code {
   display: block;
   justify-content: flex-start;
   margin-left: 20%;
-  background-color: lightcyan;
+  background-color: rgb(138, 241, 241);
   border: solid;
   border-color: #ffca28;
 }

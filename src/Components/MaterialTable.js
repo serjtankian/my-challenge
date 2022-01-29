@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
+    border: "2px solid #ffca28 ",
+    backgroundColor: "#43e9fd",
   },
 }));
 

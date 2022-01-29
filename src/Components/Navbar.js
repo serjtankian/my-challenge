@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "black",
+    flexGrow: "1",
   },
   navlinks: {
     marginLeft: theme.spacing(10),
@@ -50,9 +51,6 @@ function Navbar() {
 
           <Link to="/operation_form" className={classes.link}>
             Operations Form
-          </Link>
-          <Link to="/login" className={classes.link}>
-            Login
           </Link>
         </div>
       </Toolbar>
