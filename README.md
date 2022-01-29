@@ -19,6 +19,6 @@ Se ha configurado en las dependencias para que se inicie en PORT=3000
 
 ### `npm run seed` seedear DB.
 
-El cliente no tendrá datos que iterar en un principio por lo que debe correr para correr el archivo seed.js y asi llenar la base de datos.
+El cliente no tendrá datos que iterar en un principio por lo que debe correr el archivo seed.js y asi llenar la base de datos.
 
 ### Falta Login , Register y Paginacion.
