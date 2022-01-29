@@ -47,9 +47,7 @@ function Navbar() {
           <Link to="/" className={classes.link}>
             Home
           </Link>
-          <Link to="/operation_list" className={classes.link}>
-            Operations List
-          </Link>
+
           <Link to="/operation_form" className={classes.link}>
             Operations Form
           </Link>

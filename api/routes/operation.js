@@ -65,25 +65,17 @@ router.put("/edit/:id", (req, res, next) => {
     },
     returning: true,
   }).then(([n, opUpdated]) => {
-    Categories.findOrCreate(
-      req.body.categories
-        ? {
-            where: {
-              name: req.body.categories,
-            },
-          }
-        : {
-            where: {
-              name: req.body.category.name,
-            },
-          }
-    )
+    Categories.findOrCreate({
+      where: {
+        name: req.body.categories ?? req.body.category.name,
+      },
+    })
       .then((category) => {
         opUpdated[0].getCategory();
         opUpdated[0].setCategory(category[0]);
         console.log("este es el updated", opUpdated[0]);
         console.log("esta es la nueva category", category[0]);
-        res.send(opUpdated[0]);
+        res.send(opUpdated[0]).status(201);
       })
       .catch((error) => console.log(error));
   });

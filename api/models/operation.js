@@ -19,12 +19,7 @@ Operation.init(
       type: sequelize.STRING,
       allowNull: false,
     },
-  },
-  { sequelize: db, modelName: "operation" }
-);
-
-module.exports = Operation;
-/* createdAt: {
+    /* createdAt: {
       type: sequelize.DataTypes.DATE,
       //note here this is the guy that you are looking for
       get() {
@@ -41,3 +36,8 @@ module.exports = Operation;
         );
       },
     }, */
+  },
+  { sequelize: db, modelName: "operation" }
+);
+
+module.exports = Operation;
