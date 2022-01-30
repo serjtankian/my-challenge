@@ -134,12 +134,7 @@ function OperationForm() {
 
   //Guardamos los ultimos 10 objetos en localStorage para reutilizarlos en Home.
 
-  const lastTen = data
-    .sort((a, b) => a.id - b.id)
-    .reverse()
-    .slice(0, 10);
-
-  localStorage.setItem("list", JSON.stringify(lastTen));
+  localStorage.setItem("Completelist", JSON.stringify(data));
 
   useEffect(() => {
     getApi();

@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import Axios from "axios";
+/* import { useState, useEffect } from "react";
+import Axios from "axios"; */
 import {
   TableContainer,
   Table,
@@ -13,15 +13,8 @@ import {
 import "../index.css";
 
 function Home() {
-  // el home hara un axios y tomara el array operation sumando el amount.
-
-  const [amount, setamount] = useState([]);
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/api/operation/").then((op) => {
-      return setamount(op.data);
-    });
-  }, []);
+  const list = localStorage.getItem("list");
+  const amount = JSON.parse(list);
 
   const resultInput = amount
     .filter((element) => element.type === "input")
@@ -31,12 +24,12 @@ function Home() {
     .reduce((acum, element) => acum + element.amount, 0);
   const totalResult = resultInput - resultOutput;
 
-  //recupero los ultimos 10 objetos desde localStorage
-  const list = localStorage.getItem("list");
-  const lastTen = JSON.parse(list);
+  //Tomo los ultimos 10 de la lista
+  const lastTen = amount
+    .sort((a, b) => a.id - b.id)
+    .reverse()
+    .slice(0, 10);
 
-  /*  console.log("ingreso", resultInput);
-  console.log("egreso", resultOutput); */
   console.table(lastTen);
 
   return (
